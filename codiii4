@@ -1,0 +1,179 @@
+index.html
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fun Counter</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Segoe UI,Arial,sans-serif;
+    background:linear-gradient(135deg,#0f172a,#1e293b);
+    color:white;
+}
+
+.container{
+    max-width:900px;
+    margin:40px auto;
+    padding:20px;
+}
+
+h1{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:#1e293b;
+    border-radius:20px;
+    padding:25px;
+    text-align:center;
+    box-shadow:0 8px 20px rgba(0,0,0,.25);
+}
+
+.counter{
+    font-size:72px;
+    font-weight:bold;
+    margin:20px 0;
+}
+
+button{
+    border:none;
+    border-radius:12px;
+    padding:12px 20px;
+    margin:5px;
+    cursor:pointer;
+    font-size:18px;
+}
+
+.plus{
+    background:#22c55e;
+    color:white;
+}
+
+.minus{
+    background:#ef4444;
+    color:white;
+}
+
+.reset{
+    background:#64748b;
+    color:white;
+}
+
+.footer{
+    margin-top:30px;
+    text-align:center;
+}
+
+.total{
+    font-size:24px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>🎯 Fun Counter</h1>
+
+    <div class="grid">
+
+        <div class="card">
+            <h2>💧 Kategorie A</h2>
+            <div id="counter1" class="counter">0</div>
+            <button class="plus" onclick="change('counter1',1)">+1</button>
+            <button class="minus" onclick="change('counter1',-1)">-1</button>
+        </div>
+
+        <div class="card">
+            <h2>🎤 Kategorie B</h2>
+            <div id="counter2" class="counter">0</div>
+            <button class="plus" onclick="change('counter2',1)">+1</button>
+            <button class="minus" onclick="change('counter2',-1)">-1</button>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <p class="total">
+            Gesamt: <span id="gesamt">0</span>
+        </p>
+
+        <button class="reset" onclick="resetAll()">
+            Alles zurücksetzen
+        </button>
+    </div>
+</div>
+
+<script>
+
+function save(){
+    localStorage.setItem("counter1",
+        document.getElementById("counter1").innerText);
+    localStorage.setItem("counter2",
+        document.getElementById("counter2").innerText);
+
+    updateTotal();
+}
+
+function change(id,amount){
+
+    let value =
+        parseInt(document.getElementById(id).innerText);
+
+    value += amount;
+
+    if(value < 0){
+        value = 0;
+    }
+
+    document.getElementById(id).innerText = value;
+    save();
+}
+
+function updateTotal(){
+
+    let a = parseInt(
+        document.getElementById("counter1").innerText);
+
+    let b = parseInt(
+        document.getElementById("counter2").innerText);
+
+    document.getElementById("gesamt").innerText = a+b;
+}
+
+function load(){
+
+    document.getElementById("counter1").innerText =
+        localStorage.getItem("counter1") || 0;
+
+    document.getElementById("counter2").innerText =
+        localStorage.getItem("counter2") || 0;
+
+    updateTotal();
+}
+
+function resetAll(){
+
+    localStorage.removeItem("counter1");
+    localStorage.removeItem("counter2");
+
+    load();
+}
+
+load();
+
+</script>
+
+</body>
+</html>
